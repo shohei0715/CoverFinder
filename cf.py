@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from subprocess import Popen, PIPE
 from Tkinter import *
 import webbrowser
@@ -22,11 +24,28 @@ def get_iTunes():
     res["title"] = get_element('name')
     res["album"] = get_element('album')
 
-    c0.create_text(75, 75, text = res["artist"], font = ('FixedSys', 14))
-    c0.create_text(75, 89, text = res["title"], font = ('FixedSys', 14))
-    c0.create_text(75, 103, text = res["album"], font = ('FixedSys', 14))
 
-    root.after(1000,get_iTunes)
+    #c0.create_text(75, 75, text = res["artist"] , font = ('FixedSys', 14))
+    #c0.create_text(75, 89, text = res["title"], font = ('FixedSys', 14))
+    #c0.create_text(75, 103, text = res["album"], font = ('FixedSys', 14))
+    #c0.pack()
+
+
+#    root.after(1000,get_iTunes)
+    return res
+
+def iTunes_update():
+
+
+    info_dic = get_iTunes()
+    artist.configure(text=info_dic["artist"])
+    title.configure(text=info_dic["title"])
+    album.configure(text=info_dic["album"])
+
+    root.after(1000,iTunes_update)
+
+
+
 
 def open_browser():
     url = 'http://www.python.org/'
@@ -41,15 +60,24 @@ def open_browser():
 root = Tk()
 c0 = Canvas(root, width = 150, height = 150)
 
+
 info_dic = get_iTunes()
+artist = Label(None, text=info_dic["artist"])
+title = Label(None, text=info_dic["title"])
+album =Label(None, text=info_dic["album"])
+artist.pack()
+title.pack()
+album.pack()
+
+iTunes_update()
 
 #c0.create_text(75, 75, text = info_dic["artist"], font = ('FixedSys', 14))
 #c0.create_text(75, 89, text = info_dic["title"], font = ('FixedSys', 14))
 #c0.create_text(75, 103, text = info_dic["album"], font = ('FixedSys', 14))
 
-button=Button(root, text="Get Info from iTunes", command = open_browser())
+button=Button(root, text="Get Info from iTunes", command = open_browser)
 button.pack()
 
-c0.pack()
+
 
 root.mainloop()
