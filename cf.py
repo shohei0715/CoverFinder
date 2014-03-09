@@ -1,8 +1,11 @@
+#!/usr/bin/python
 # -*- coding:utf-8 -*-
+
 
 from subprocess import Popen, PIPE
 from Tkinter import *
 import webbrowser
+import urllib
 
 
 AS = '''
@@ -11,6 +14,8 @@ tell application "iTunes"
 end tell
 '''
 args = []
+
+
 
 def get_element(val):
     p = Popen(['osascript', '-'] + args, stdin=PIPE, stdout=PIPE, stderr=PIPE)
@@ -45,10 +50,15 @@ def iTunes_update():
     root.after(1000,iTunes_update)
 
 
-
-
 def open_browser():
-    url = 'http://www.python.org/'
+
+
+    info_dic = get_iTunes()
+    keyword_title = info_dic["title"].decode('utf-8') + " "
+    keyword_artist = info_dic["artist"].decode('utf-8') + " "
+    keyword_album = info_dic["album"].decode('utf-8') + " "
+    
+    url = 'http://www.amazon.co.jp/gp/search/?__mk_ja_JP=%83J%83%5E%83J%83i&field-keywords='+urllib.quote(keyword_album.encode('shift-jis'))+urllib.quote(keyword_artist.encode('shift-jis'))
     webbrowser.open_new(url)
     
 
